@@ -1,0 +1,46 @@
+---
+title: "Wrack_monitoring_surveys"
+author: "Ric DeSantiago"
+date: "2023-01-30"
+output: html_document
+---
+
+# Library
+```{r libraries}
+library(knitr)
+library(jtools)
+library(tidyverse)
+library(tidyr)
+library(ggplot2)
+library(ggfortify)
+library(lme4)
+library(car)
+library(nlme)
+library(ggpubr)
+library(multcompView)
+library(boot)
+library(Hotelling)
+library(mvnTest)
+library(vegan)
+library(factoextra)
+library(FactoMineR)
+library(agricolae)
+library(glmm)
+library(HH)
+library(ggpubr)
+library(cran)
+library(rstatix)
+#hi
+```
+
+#
+```{r}
+#hello world 
+
+```
+
+#
+```{r}
+plot(pressure)
+```
+
