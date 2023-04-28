@@ -1,0 +1,141 @@
+date,time,site,survey,kelp_pile_num,dominant_species,kelp_L_m,kelp_W_m,kelp_D_m,ellipse_A_m2,sarg_L_1,sarg_W_1,sarg_1_A,sarg_L_2,sarg_W_2,sarg_2_A,sarg_L_3,sarg_W_3,sarg_3_A,sarg_L_4,sarg_W_4,sarg_4_A,sarg_total,proportion,percent,GPS_N1,GPS_W1,GPS_N2,GPS_W2,Observer,Recorder
+1/1/20,NA,Cosign,invasive_wrack,a,M. pyrifera,1.8,0.67,,0.95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/2/20,NA,Cosign,invasive_wrack,b,M. pyrifera,2.78,1,,2.18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/3/20,NA,Cosign,invasive_wrack,c,M. pyrifera,2.16,1.96,,3.33,0.09,0.03,0,0,0,0,0,0,0,0,0,0,0.002,0.001,0.064,NA,NA,NA,NA,NA,NA
+1/4/20,NA,Cosign,invasive_wrack,d,M. pyrifera,1.97,1.54,,2.38,0.29,0.07,0.02,0.05,0.02,0,0,0,0,0,0,0,0.016,0.007,0.669,NA,NA,NA,NA,NA,NA
+1/5/20,NA,Cosign,invasive_wrack,e,M. pyrifera,1.2,0.61,,0.57,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/6/20,NA,Cosign,invasive_wrack,f,M. pyrifera,0.94,0.61,,0.45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/7/20,NA,Cosign,invasive_wrack,g,M. pyrifera,1.07,0.6,,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/8/20,NA,Cosign,invasive_wrack,h,M. pyrifera,2.32,1.78,,3.24,0.35,0.14,0.04,0.28,0.1,0.02,0,0,0,0,0,0,0.058,0.018,1.803,NA,NA,NA,NA,NA,NA
+1/9/20,NA,Cosign,invasive_wrack,i,M. pyrifera,1.3,1.1,,1.12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/10/20,NA,Cosign,invasive_wrack,j,M. pyrifera,1.4,0.67,,0.74,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/11/20,NA,Cosign,invasive_wrack,1,M. pyrifera,2.6,1.2,,2.45,0.25,0.16,0.03,0.1,0.05,0,0,0,0,0,0,0,0.031,0.013,1.282,NA,NA,NA,NA,NA,NA
+1/12/20,NA,Cosign,invasive_wrack,2,M. pyrifera,2.8,1.2,,2.64,0.5,0.3,0.12,0,0,0,0,0,0,0,0,0,0.118,0.045,4.464,NA,NA,NA,NA,NA,NA
+1/13/20,NA,Cosign,invasive_wrack,3,M. pyrifera,3.1,3.2,,7.79,1,1.2,0.94,0,0,0,0,0,0,0,0,0,0.942,0.121,12.097,NA,NA,NA,NA,NA,NA
+1/14/20,NA,Cosign,invasive_wrack,4,M. pyrifera,6,0.4,,1.88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/15/20,NA,Cosign,invasive_wrack,5,M. pyrifera,1.9,1.15,,1.72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/16/20,NA,Cosign,invasive_wrack,6,M. pyrifera,2.1,0.65,,1.07,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/17/20,NA,Cosign,invasive_wrack,7,M. pyrifera,2.2,1,,1.73,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/18/20,NA,Cosign,invasive_wrack,8,M. pyrifera,2.1,0.8,,1.32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/19/20,NA,Cosign,invasive_wrack,9,M. pyrifera,1.7,1.1,,1.47,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/20/20,NA,W_Marker_Poles,invasive_wrack,a,M. pyrifera,1.35,1,,1.06,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/21/20,NA,W_Marker_Poles,invasive_wrack,b,M. pyrifera,2,0.85,,1.34,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/22/20,NA,W_Marker_Poles,invasive_wrack,c,M. pyrifera,2.45,5,,9.62,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/23/20,NA,W_Marker_Poles,invasive_wrack,d,M. pyrifera,1,1,,0.79,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/24/20,NA,W_Marker_Poles,invasive_wrack,e,M. pyrifera,1.2,0.7,,0.66,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/25/20,NA,W_Marker_Poles,invasive_wrack,f,M. pyrifera,2.47,0.74,,1.44,0.11,0.01,0,0.12,0.02,0,0,0,0,0,0,0,0.001,0.001,0.06,NA,NA,NA,NA,NA,NA
+1/26/20,NA,W_Marker_Poles,invasive_wrack,g,M. pyrifera,2.06,1.01,,1.63,0.13,0.7,0.07,0.1,0.02,0,0.17,0.12,0.016,0.07,0.04,0.002,0.09,0.055,5.489,NA,NA,NA,NA,NA,NA
+1/27/20,NA,W_Marker_Poles,invasive_wrack,1,M. pyrifera,2.02,1.23,,1.95,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/28/20,NA,W_Marker_Poles,invasive_wrack,2,M. pyrifera,2.14,1.78,,2.99,0.15,0.04,0,0.09,0.01,0,0,0,0,0,0,0,0.005,0.002,0.158,NA,NA,NA,NA,NA,NA
+1/29/20,NA,W_Marker_Poles,invasive_wrack,3,M. pyrifera,3.46,0.59,,1.6,,,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+1/30/20,NA,W_Marker_Poles,invasive_wrack,4,M. pyrifera,1.91,0.76,,1.14,0.13,0.06,0.01,0,0,0,0,0,0,0,0,0,0.006,0.005,0.537,NA,NA,NA,NA,NA,NA
+1/31/20,NA,W_Marker_Poles,invasive_wrack,5,M. pyrifera,1.68,0.87,,1.15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+2/1/20,NA,W_Marker_Poles,invasive_wrack,6,M. pyrifera,1.58,0.74,,0.92,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+2/2/20,NA,W_Marker_Poles,invasive_wrack,7,M. pyrifera,1.98,1.27,,1.97,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+2/3/20,NA,W_Marker_Poles,invasive_wrack,8,M. pyrifera,1.09,0.96,,0.82,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+2/4/20,NA,W_Marker_Poles,invasive_wrack,9,M. pyrifera,2.74,0.74,,1.59,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+2/5/20,NA,W_Marker_Poles,invasive_wrack,10,M. pyrifera,1.38,0.62,,0.67,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+2/6/20,NA,W_Marker_Poles,invasive_wrack,11,M. pyrifera,2.53,0.68,,1.35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+2/7/20,NA,W_Marker_Poles,invasive_wrack,12,M. pyrifera,2.57,0.41,,0.83,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,NA,NA,NA,NA
+2/8/20,NA,W_Marker_Poles,invasive_wrack,13,M. pyrifera,1.49,0.86,,1.01,0.64,0.13,0.07,0,0,0,0,0,0,0,0,0,0.0653,0.0649,6.4929,NA,NA,NA,NA,NA,NA
+9/13/22,3:03 PM,Cissy ,invasive_wrack,1,M. pyrifera,6.63,0.6,0.19,0.09,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.907","119, 29.175",NA,NA,RDS,JP
+9/13/22,3:03 PM,Cissy ,invasive_wrack,2,M. pyrifera,2.56,1.4,0.36,0.4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.907","119, 29.175",NA,NA,RDS,JP
+9/13/22,3:03 PM,Cissy ,invasive_wrack,3,M. pyrifera,2.24,0.88,0.14,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.907","119, 29.175",NA,NA,RDS,JP
+9/13/22,3:03 PM,Cissy ,invasive_wrack,4,M. pyrifera,8,3.24,0.44,1.12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.907","119, 29.175",NA,NA,RDS,JP
+9/13/22,3:03 PM,Cissy ,invasive_wrack,5,M. pyrifera,2.21,0.75,0.29,0.17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.907","119, 29.175",NA,NA,RDS,JP
+9/13/22,3:03 PM,Cissy ,invasive_wrack,6,M. pyrifera,2.75,1.78,0.4,0.56,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.907","119, 29.175",NA,NA,RDS,JP
+9/13/22,3:03 PM,Cissy ,invasive_wrack,7,M. pyrifera,8.47,1.79,0.29,0.41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.907","119, 29.175",NA,NA,RDS,JP
+9/13/22,3:03 PM,Cissy ,invasive_wrack,8,M. pyrifera,3.46,1.09,0.45,0.39,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.907","119, 29.175",NA,NA,RDS,JP
+9/13/22,3:03 PM,Cissy ,invasive_wrack,9,M. pyrifera,1.8,1.28,0.26,0.26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.907","119, 29.175",NA,NA,RDS,JP
+9/13/22,3:03 PM,Cissy ,invasive_wrack,10,M. pyrifera,2.53,1.58,0.47,0.58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.907","119, 29.175",NA,NA,RDS,JP
+9/13/22,3:03 PM,Cissy ,invasive_wrack,11,M. pyrifera,2.5,0.73,0.2,0.11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.907","119, 29.175",NA,NA,RDS,JP
+9/13/22,3:03 PM,Cissy ,invasive_wrack,12,M. pyrifera,1.7,0.78,0.29,0.18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.907","119, 29.175",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,invasive_wrack,1,M. pyrifera,1.18,0.52,0.13,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+13-Sep,1:35 PM,Tranquility_Beach,invasive_wrack,2,M. pyrifera,1.38,0.28,0.1,0.02,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,invasive_wrack,3,Phyllospadix,1.3,0.44,0.08,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,invasive_wrack,4,M. Pyrifera,4.56,0.98,0.38,0.29,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,invasive_wrack,5,Phyllospadix,1.67,0.44,0.09,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,invasive_wrack,6,Phyllospadix,1.2,0.52,0.08,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,invasive_wrack,7,M. Pyrifera,5.8,1.68,0.31,0.41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,invasive_wrack,8,M. Pyrifera,5.1,0.91,0.23,0.16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,invasive_wrack,9,M. Pyrifera,1.63,0.42,0.26,0.09,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,Invasive_wrack,10,M. Pyrifera,1.19,0.56,0.06,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,Invasive_wrack,11,M. Pyrifera,2.47,0.58,0.2,0.09,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,Invasive_wrack,12,M. Pyrifera,1.68,0.7,0.34,0.19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,Invasive_wrack,13,M. Pyrifera,6.34,2.25,0.29,0.51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,Invasive_wrack,14,M. Pyrifera,1.45,0.7,0.2,0.11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,1:35 PM,Tranquility_Beach,Invasive_wrack,15,E. menziesii,1,0.45,0.18,0.06,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.952","119, 29.898",NA,NA,RDS,JP
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,1,M. Pyrifera,2.1,1.4,0.15,0.16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie",Big T
+13-Sep,12:00 PM,Tender_Beach ,Invasive_wrack,2,M. Pyrifera,1.91,0.82,0.11,0.07,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,3,M. Pyrifera,2.01,1.5,0.16,0.19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,4,M. Pyrifera,1.48,0.33,0.11,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,5,M. Pyrifera,1.22,0.36,0.1,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Bit T, Jessie ",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,6,M. Pyrifera,1.12,0.18,0.06,0.01,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,7,M. Pyrifera,2.18,1.05,0.18,0.15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie ",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,8,Phyllospadix,1.32,0.37,0.12,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie ",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,9,M. Pyrifera,1.5,0.43,0.08,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie ",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,10,M. Pyrifera,1.78,1.1,0.17,0.15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,11,M. Pyrifera,2.47,2,0.2,0.31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,12,M. Pyrifera,1.87,0.7,0.12,0.07,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,13,M. Pyrifera,2.7,0.92,0.26,0.19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,14,M. Pyrifera,1.55,0.78,0.19,0.12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie",Big T
+9/13/22,12:00 PM,Tender_Beach ,Invasive_wrack,15,M. Pyrifera,3.3,1.41,0.15,0.17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NA,NA,"33, 16.966","119, 32.175","Big T, Jessie",Big T
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,1,M. Pyrifera,1.47,0.56,0.25,0.11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,2,M. Pyrifera,1.27,0.67,0.26,0.14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,3,M. Pyrifera,2.65,0.5,0.22,0.09,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,4,M. Pyrifera,3.78,2.81,0.26,0.57,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,5,M. Pyrifera,4,0.65,0.34,0.17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,6,M. Pyrifera,1.17,0.57,0.16,0.07,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,7,M. Pyrifera,1.32,0.53,0.25,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,8,M. Pyrifera,3.62,1.73,0.34,0.46,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,9,M. Pyrifera,2.85,0.5,0.17,0.07,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,10,M. Pyrifera,2.23,0.63,0.18,0.09,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,11,M. Pyrifera,1.3,0.52,0.13,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,12,M. Pyrifera,2.51,0.68,0.27,0.14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,13,M. Pyrifera,1.33,0.33,0.1,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/13/22,4:35 PM,Artist_Beach,Invasive_wrack,14,M. Pyrifera,1.62,0.15,0.05,0.01,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.513","119, 28.131",NA,NA,RDS,JP
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,1,M. Pyrifera,2.41,0.95,0.1,0.07,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,2,M. Pyrifera,3.48,1.49,0.14,0.16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,3,Phyllospadix,2.62,0.6,0.09,0.04,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,4,M. Pyrifera,1.87,0.91,0.09,0.06,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,5,M. Pyrifera,2.27,0.8,0.13,0.08,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,6,M. Pyrifera,1.35,0.79,0.11,0.07,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,7,M. Pyrifera,2.24,0.59,0.08,0.04,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,8,M. Pyrifera,1.43,0.73,0.16,0.09,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,9,M. Pyrifera,1.48,1.28,0.15,0.15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,10,M. Pyrifera,3.6,0.91,0.18,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,11,M. Pyrifera,2.81,0.93,0.11,0.08,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,12,M. Pyrifera,2,1.2,0.08,0.08,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,13,M. Pyrifera,2.16,0.97,0.06,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,14,M. Pyrifera,1.62,0.89,0.08,0.06,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,12:35 PM,Artist_Beach,Invasive_wrack,15,M. Pyrifera,1.41,0.74,0.13,0.08,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.269","119, 33.593","33, 16.249","119, 33.650","Jessie, Big T",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,1,M. Pyrifera,2.3,1.24,0.4,0.39,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie",Ric 
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,2,M. Pyrifera,1.3,0.56,0.06,0.03,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,3,M. Pyrifera,1.65,0.94,0.14,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,4,M. Pyrifera,5.95,1.59,0.55,0.69,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie ",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,5,M. Pyrifera,10.03,1.62,0.24,0.31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,6,M. Pyrifera,8.14,2.8,0.63,1.39,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,7,M. Pyrifera,3.45,0.77,0.34,0.21,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie ",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,8,M. Pyrifera,9.3,1.3,0.45,0.46,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie ",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,9,M. Pyrifera,1.75,0.48,0.32,0.12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie ",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,10,M. Pyrifera,2.44,0.7,0.44,0.24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie ",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,11,M. Pyrifera,3.95,1.23,0.44,0.43,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie ",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,12,M. Pyrifera,4.42,0.63,0.3,0.15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie ",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,13,M. Pyrifera,1.03,0.64,0.26,0.13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie ",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,14,M. Pyrifera,1.88,0.48,0.14,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie",Ric
+9/14/22,1:34 PM,Bachelor_Beach ,Invasive_wrack,15,M. Pyrifera,1.3,0.47,0.22,0.08,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 15.285","119, 34.016","33, 15.239","119, 33.958","Big T, Jessie",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,1,M. Pyrifera,4.56,2.8,0.63,1.39,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric 
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,2,M. Pyrifera,4.99,0.82,0.3,0.19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,3,M. Pyrifera,5.67,2,0.56,0.88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,4,M. Pyrifera,4.26,2.4,0.5,0.94,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric
+22-Sep,3:10 PM,Cosign ,Invasive_wrack,5,M. Pyrifera,2.14,0.62,0.4,0.19,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,6,M. Pyrifera,7.71,2.51,0.38,0.75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,7,M. Pyrifera,1.88,0.48,0.16,0.06,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,8,M. Pyrifera,2.66,1.11,0.58,0.51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,9,M. Pyrifera,2.09,0.56,0.41,0.18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,10,M. Pyrifera,1.73,0.94,0.22,0.16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,11,M. Pyrifera,4.17,3.44,0.09,0.24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,12,M. Pyrifera,3.81,2.38,0.19,0.36,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,13,M. Pyrifera,2.98,2.25,0.62,1.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,14,E. menziesii,2.26,0.69,0.12,0.07,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie ",Ric
+9/14/22,3:10 PM,Cosign ,Invasive_wrack,15,M. Pyrifera,2.84,0.52,0.29,0.12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"33, 16.500","119, 34.613","33, 16.527","119, 34.627","Big T, Jessie",Ric
