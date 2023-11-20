@@ -45,6 +45,43 @@ wrackfig
 
 #
 ```{r}
-plot(pressure)
-```
+Data<-read.csv("wrack_line_survey.csv",header=T)
+
+View(Data)
+
+Pie_data_RedEye<-subset(Data, site =="Red Eye")
+
+view(Pie_data_RedEye)
+
+Pie_data_Tranquil<-subset(Data, site == "Tranquil")
+
+view(Pie_data_Tranquil)
+
+Pie_data_Tender<-subset(Data, site =="Tender Beach")
+
+View(Pie_data_Tender)
+
+Pie_data_Artist<-subset(Data, site =="Artist")
+
+View(Pie_data_Artist)
+
+Pie_data_Bachelor<-subset(Data, site =="Bachelor")
+
+View(Pie_data_Bachelor)
+
+Pie_data_Cosign<-subset(Data, site =="Cosign")
+
+View(Pie_data_Cosign)
+
+Pie_data_Marker<-subset(Data, site =="W_Marker_Poles")
+
+View(Pie_data_Marker)
+
+Pie_data_Cissy<-subset(Data, site =="Cissy")
+
+View(Pie_data_Cissy)
+
+
+
+
 
