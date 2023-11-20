@@ -6,7 +6,7 @@ output: html_document
 ---
 
 # Library
-```{r libraries}
+```{r}
 library(knitr)
 library(jtools)
 library(tidyverse)
@@ -28,16 +28,19 @@ library(agricolae)
 library(glmm)
 library(HH)
 library(ggpubr)
-library(cran)
 library(rstatix)
 #hi
 ```
 
-#
+#explore data
+## wrack line surveys
 ```{r}
-#hello world 
-#hello earthling
-
+#upload data 
+Wrack <- read.csv("wrack_line_survey.csv") 
+Wrack<-subset(Wrack, !year== "2020")
+view(Wrack)
+wrackfig<- ggplot(Wrack, aes(x = site, y = percent, fill = sarg )) + geom_boxplot()
+wrackfig
 ```
 
 #
