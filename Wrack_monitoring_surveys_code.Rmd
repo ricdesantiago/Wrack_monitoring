@@ -41,11 +41,16 @@ Wrack<-subset(Wrack, !year== "2020")
 view(Wrack)
 wrackfig<- ggplot(Wrack, aes(x = site, y = percent, fill = sarg )) + geom_boxplot()
 wrackfig
+
+Pie_data_RedEye<-subset(Wrack, site =="Red Eye")
+
+view(Pie_data_RedEye)
 ```
 
-#
+
 ```{r}
 Data<-read.csv("wrack_line_survey.csv",header=T)
+
 
 View(Data)
 
