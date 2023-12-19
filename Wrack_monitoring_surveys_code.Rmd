@@ -32,8 +32,8 @@ library(rstatix)
 #hi
 ```
 
-#explore data
-## wrack line surveys
+
+# Wrack line surveys (ellipse)
 ```{r}
 #upload data 
 Wrack <- read.csv("wrack_line_survey.csv") 
@@ -42,51 +42,127 @@ view(Wrack)
 wrackfig<- ggplot(Wrack, aes(x = site, y = percent, fill = sarg )) + geom_boxplot()
 wrackfig
 
-Pie_data_RedEye<-subset(Wrack, site =="Red Eye")
+Wrack$trip<-as.factor(Wrack$trip)
 
-view(Pie_data_RedEye)
+
+Wrack %>%
+ filter(!(GPS_N1 %in% "") | is.na(GPS_N1)) %>%
+ filter(!(GPS_W1 %in% "") | is.na(GPS_W1)) %>%
+ filter(!(GPS_N2 %in% "") | is.na(GPS_N2)) %>%
+ filter(!(GPS_W2 %in% "") | is.na(GPS_W2)) %>%
+ filter(!(Observer %in% 
+ "")) %>%
+ filter(!(Recorder %in% "")) %>%
+ ggplot() +
+ aes(x = site, weight = ellipse_A_m2) +
+ geom_bar(position = "dodge", fill = "#112446") +
+ labs(y = "Area of wrack (M^3)") +
+ theme_minimal() +
+ facet_grid(vars(trip), vars())
+
+ 
+Wrack %>%
+  filter(!(GPS_N1 %in% "") | is.na(GPS_N1)) %>%
+  filter(!(GPS_W1 %in% "") | is.na(GPS_W1)) %>%
+  filter(!(GPS_N2 %in% "") | is.na(GPS_N2)) %>%
+  filter(!(GPS_W2 %in% "") | is.na(GPS_W2)) %>%
+  filter(!(Observer %in% "")) %>%
+  filter(!(Recorder %in% "")) %>%
+  filter(!is.na(Dominant_species)) %>% 
+  ggplot() +
+  aes(x = site, fill = Dominant_species, weight = ellipse_A_m2) +
+  geom_bar() +
+  scale_fill_hue(direction = 1) +
+  theme_minimal() +
+  labs(y = "Area of wrack (M^3)") +
+  facet_grid(vars(trip), vars())
+
+
 ```
 
 
+#Beach wrack (Dugan)
 ```{r}
-Data<-read.csv("wrack_line_survey.csv",header=T)
+
+beachwrack<-read.csv("beach_wrack.csv", header = T)
+beachwrack$Trip<-as.factor(beachwrack$Trip)
+beachwrack$length<-as.factor(beachwrack$length)
+
+#remove the zero hits
+beachwrack <- subset(beachwrack, hits != 0)
 
 
-View(Data)
+ggplot(beachwrack) +
+ aes(x = site, fill = species, weight = hits) +
+ geom_bar(position = "dodge") +
+ scale_fill_hue(direction = 1) +
+ theme_minimal() +
+ facet_grid(vars(), vars(Trip))
 
-Pie_data_RedEye<-subset(Data, site =="Red Eye")
 
-view(Pie_data_RedEye)
+# Calculate means and standard errors
+means_se <- beachwrack %>%
+  group_by(site, species, Trip) %>%
+  summarize(mean_hits = mean(hits),
+            se_hits = sd(hits) / sqrt(n()))
 
-Pie_data_Tranquil<-subset(Data, site == "Tranquil")
-
-view(Pie_data_Tranquil)
-
-Pie_data_Tender<-subset(Data, site =="Tender Beach")
-
-View(Pie_data_Tender)
-
-Pie_data_Artist<-subset(Data, site =="Artist")
-
-View(Pie_data_Artist)
-
-Pie_data_Bachelor<-subset(Data, site =="Bachelor")
-
-View(Pie_data_Bachelor)
-
-Pie_data_Cosign<-subset(Data, site =="Cosign")
-
-View(Pie_data_Cosign)
-
-Pie_data_Marker<-subset(Data, site =="W_Marker_Poles")
-
-View(Pie_data_Marker)
-
-Pie_data_Cissy<-subset(Data, site =="Cissy")
-
-View(Pie_data_Cissy)
+# Plot the data with means and standard errors
+ggplot(means_se, aes(x = site, y = mean_hits, fill = species)) +
+  geom_bar(position = position_dodge(width = 1), stat = "identity") +
+  geom_errorbar(aes(ymin = mean_hits - se_hits, ymax = mean_hits + se_hits),
+                position = position_dodge(width = 1), width = 0.25) +
+  scale_fill_hue(direction = 1) +
+  theme_minimal() +
+  labs(y = "Number of occurences") +
+  facet_grid(vars(Trip))
 
 
 
 
+frag_means_se <- beachwrack %>%
+  group_by(species, Trip, length) %>%
+  summarize(frag_means_se = mean(hits),
+            frag_se_hits = sd(hits) / sqrt(n()))
 
+ggplot(frag_means_se, aes(x = length, y = frag_means_se, fill = species)) +
+  geom_bar(position = position_dodge(width = 1), stat = "identity") +
+  geom_errorbar(aes(ymin = frag_means_se - frag_se_hits, ymax = frag_means_se + frag_se_hits),
+                position = position_dodge(width = 1), width = 0.25) +
+   scale_fill_hue(direction = 1) +
+ labs(x = "Fragment length (mm)", y = "Number of occurences", fill = "Species") +
+ theme_minimal() +
+ facet_grid(vars(Trip), vars())
+
+
+ggplot(beachwrack) +
+ aes(x = length, fill = species, weight = hits) +
+  geom_bar(position = position_dodge(width = 1), stat = "identity") +
+  geom_errorbar(aes(ymin = mean_hits - se_hits, ymax = mean_hits + se_hits),
+                position = position_dodge(width = 1), width = 0.25) +
+ scale_fill_hue(direction = 1) +
+ labs(x = "Fragment length (mm)", y = "Number of occurences", fill = "Species") +
+ theme_minimal() +
+ facet_grid(vars(Trip), vars())
+
+
+```
+
+#Timed search
+```{r}
+timed<-read.csv("Sargassum_time_search.csv", header = T)
+view(timed)
+
+timed$Trip<-as.factor(timed$Trip)
+
+
+
+library(ggplot2)
+
+ggplot(timed) +
+ aes(x = Site, y = occurances) +
+ geom_col(fill = "#112446") +
+ theme_minimal() +
+   labs(y = "Number of S. horneri occurences") +
+ facet_grid(vars(Trip), 
+ vars())
+```
