@@ -62,19 +62,12 @@ Wrack %>%
 
  
 Wrack %>%
-  filter(!(GPS_N1 %in% "") | is.na(GPS_N1)) %>%
-  filter(!(GPS_W1 %in% "") | is.na(GPS_W1)) %>%
-  filter(!(GPS_N2 %in% "") | is.na(GPS_N2)) %>%
-  filter(!(GPS_W2 %in% "") | is.na(GPS_W2)) %>%
-  filter(!(Observer %in% "")) %>%
-  filter(!(Recorder %in% "")) %>%
-  filter(!is.na(Dominant_species)) %>% 
   ggplot() +
   aes(x = site, fill = Dominant_species, weight = ellipse_A_m2) +
   geom_bar() +
   scale_fill_hue(direction = 1) +
   theme_minimal() +
-  labs(y = "Area of wrack (M^3)") +
+  labs(y = "Area of wrack (M^2)") +
   facet_grid(vars(trip), vars())
 
 
@@ -84,15 +77,20 @@ Wrack %>%
 #Beach wrack (Dugan)
 ```{r}
 
+#load data
 beachwrack<-read.csv("beach_wrack.csv", header = T)
 beachwrack$Trip<-as.factor(beachwrack$Trip)
 beachwrack$length<-as.factor(beachwrack$length)
+beachwrack$seaweed_per_beach<-as.numeric(beachwrack$seaweed_per_beach)
+beachwrack<- subset(beachwrack, site != "Bachelor")
 
+#lets explore look at seaweed hits on the transect by site by species over time at each site
 #remove the zero hits
-beachwrack <- subset(beachwrack, hits != 0)
+beachwrack_hits <- subset(beachwrack, hits != 0)
 
 
-ggplot(beachwrack) +
+#look at hits by species per site
+ggplot(beachwrack_hits) +
  aes(x = site, fill = species, weight = hits) +
  geom_bar(position = "dodge") +
  scale_fill_hue(direction = 1) +
@@ -100,13 +98,13 @@ ggplot(beachwrack) +
  facet_grid(vars(), vars(Trip))
 
 
-# Calculate means and standard errors
+# Calculate means and standard errors for hits
 means_se <- beachwrack %>%
   group_by(site, species, Trip) %>%
   summarize(mean_hits = mean(hits),
             se_hits = sd(hits) / sqrt(n()))
 
-# Plot the data with means and standard errors
+# Plot the data with means and standard errors for number of hits by species by site over time
 ggplot(means_se, aes(x = site, y = mean_hits, fill = species)) +
   geom_bar(position = position_dodge(width = 1), stat = "identity") +
   geom_errorbar(aes(ymin = mean_hits - se_hits, ymax = mean_hits + se_hits),
@@ -118,7 +116,9 @@ ggplot(means_se, aes(x = site, y = mean_hits, fill = species)) +
 
 
 
+#lets look at number of occurences by length of seaweed fragment
 
+#create means and se for frequency of lengths of each species by site over time
 frag_means_se <- beachwrack %>%
   group_by(species, Trip, length) %>%
   summarize(frag_means_se = mean(hits),
@@ -134,13 +134,26 @@ ggplot(frag_means_se, aes(x = length, y = frag_means_se, fill = species)) +
  facet_grid(vars(Trip), vars())
 
 
-ggplot(beachwrack) +
- aes(x = length, fill = species, weight = hits) +
-  geom_bar(position = position_dodge(width = 1), stat = "identity") +
-  geom_errorbar(aes(ymin = mean_hits - se_hits, ymax = mean_hits + se_hits),
+
+
+#lets look at length of seaweed per length of beach in terms of meters of wrack per meters of sandy beach
+
+#since all the values are placed along the column that IDs 16mm seaweeds we can use that to subset those and not deal with the other NA'd columns
+length_survey<-subset(beachwrack, length == "16")
+view(length_survey)
+
+#create mean and se for graphs
+length_means <- length_survey %>%
+  group_by(Trip, site, species) %>%
+  summarize(seaweed_per_beach_mean = mean(seaweed_per_beach),
+            length_se = sd(seaweed_per_beach) / sqrt(n()))
+
+ggplot(length_means, aes(x = site, fill = species, y = seaweed_per_beach_mean)) +
+geom_bar(position = position_dodge(width = 1), stat = "identity") +
+  geom_errorbar(aes(ymin = seaweed_per_beach_mean - length_se, ymax = seaweed_per_beach_mean + length_se),
                 position = position_dodge(width = 1), width = 0.25) +
  scale_fill_hue(direction = 1) +
- labs(x = "Fragment length (mm)", y = "Number of occurences", fill = "Species") +
+   labs(x = "Site", y = "Length of seaweed per length of beach (m)", fill = "Species") +
  theme_minimal() +
  facet_grid(vars(Trip), vars())
 
