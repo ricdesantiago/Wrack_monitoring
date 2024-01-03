@@ -47,7 +47,6 @@ library(rstatix)
 Wrack <- read.csv("wrack_line_survey.csv") 
 Wrack<-subset(Wrack, !year== "2020")
 Wrack$trip<-as.factor(Wrack$trip)
-
 # Subset the data to remove NAs
 Wrack <- subset(Wrack, Dominant_species != "na")
 
@@ -83,15 +82,15 @@ cat(se_percent, "\n")
 
 # lets look at this by site at each time point 
 horneri_summary <- horneri %>%
-  group_by(trip, site) %>%
-  summarise(
-    mean_percent = mean(percent)
+  group_by(trip) %>%
+  summarize(
+    mean_percent = mean(percent),
+    se_percent = sd(percent) / sqrt(n())
   )
-
 # Print the summary
 print(horneri_summary)
 
-
+#S. horneri consisted of 4.8 +/- 3.3% during March and 0.6 +/- 0.4% in May
 
 
 ```
@@ -113,10 +112,10 @@ Wrack <- Wrack %>%
   ))
 
 # keep labels in chronological order
-Wrack$trip_label <- factor(Wrack$trip_label, levels = c("Mar.", "May", "Nov.", "Dec."))
+Wrack$trip_label <- factor(Wrack$trip_label, levels = c("Mar.", "May", "Sep.", "Dec."))
 
 # Pplot 
-Wrack %>%
+wrack_piles <-Wrack %>%
   ggplot() +
   aes(x = site, fill = Dominant_species, weight = ellipse_A_m2) +
   geom_bar() +
@@ -125,12 +124,20 @@ Wrack %>%
   labs(y = expression("Area of wrack" ~ (m^2)), x = "") +
   facet_grid(vars(trip_label), vars()) +  
   ggtitle("Total area of wrack") +
-  labs(fill = "Species") + 
+  labs(fill = "Dominant species") + 
   theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
 
+wrack_piles
 
-
-
+wrack_piles +
+  theme(
+    axis.text = element_text(size = 14),   
+    axis.title = element_text(size = 15),    
+    plot.title = element_text(size = 18),     
+    legend.title = element_text(size = 16), 
+    legend.text = element_text(size = 14),  
+    strip.text = element_text(size = 14)      
+  )
 
 ```
 
