@@ -35,40 +35,101 @@ library(rstatix)
 
 # Wrack line surveys (ellipse)
 ```{r}
+
+#Q1: What are the dominant seaweed species that make up wrack piles?
+  #Do these differ per site? per year?
+
+#Q2: what proportion of surface area of wrack piles consist of S. horneri?
+
+
+#Q1 
 #upload data 
 Wrack <- read.csv("wrack_line_survey.csv") 
 Wrack<-subset(Wrack, !year== "2020")
-view(Wrack)
-wrackfig<- ggplot(Wrack, aes(x = site, y = percent, fill = sarg )) + geom_boxplot()
-wrackfig
-
 Wrack$trip<-as.factor(Wrack$trip)
 
+# Subset the data to remove NAs
+Wrack <- subset(Wrack, Dominant_species != "na")
 
-Wrack %>%
- filter(!(GPS_N1 %in% "") | is.na(GPS_N1)) %>%
- filter(!(GPS_W1 %in% "") | is.na(GPS_W1)) %>%
- filter(!(GPS_N2 %in% "") | is.na(GPS_N2)) %>%
- filter(!(GPS_W2 %in% "") | is.na(GPS_W2)) %>%
- filter(!(Observer %in% 
- "")) %>%
- filter(!(Recorder %in% "")) %>%
- ggplot() +
- aes(x = site, weight = ellipse_A_m2) +
- geom_bar(position = "dodge", fill = "#112446") +
- labs(y = "Area of wrack (M^3)") +
- theme_minimal() +
- facet_grid(vars(trip), vars())
 
- 
+#quick look at total wrack area by site over time showing the dominant species of the pile
 Wrack %>%
   ggplot() +
   aes(x = site, fill = Dominant_species, weight = ellipse_A_m2) +
   geom_bar() +
   scale_fill_hue(direction = 1) +
   theme_minimal() +
-  labs(y = "Area of wrack (M^2)") +
-  facet_grid(vars(trip), vars())
+  labs(y = "Area wrack area (m^2)", x = "") +
+  facet_grid(vars(trip), vars()) +
+  ggtitle("Total area of wrack") +  
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))  
+
+#### M. pyrifera is the dominant species in wrack piles 
+
+#Q2
+horneri<-subset(Wrack, sarg == "y")
+view(horneri)
+
+# mean and SE
+mean_percent <- mean(horneri$percent)
+se_percent <- sd(horneri$percent) / sqrt(length(horneri$percent))
+
+#results
+cat(mean_percent, "\n")
+cat(se_percent, "\n")
+
+##S. horneri consisted of 2.4 +/- 1.6% of the surface area of wrack piles
+
+
+# lets look at this by site at each time point 
+horneri_summary <- horneri %>%
+  group_by(trip, site) %>%
+  summarise(
+    mean_percent = mean(percent)
+  )
+
+# Print the summary
+print(horneri_summary)
+
+
+
+
+```
+
+
+##Manuscript figure 
+```{r}
+#####make graph for manuscript
+# Remove NA from species
+Wrack <- subset(Wrack, Dominant_species != "na")
+# Replace trips for  month
+Wrack <- Wrack %>%
+  mutate(trip_label = case_when(
+    trip == "1" ~ "Mar.",
+    trip == "2" ~ "May",
+    trip == "3" ~ "Sep.",
+    trip == "4" ~ "Dec.",
+    TRUE ~ as.character(trip)
+  ))
+
+# keep labels in chronological order
+Wrack$trip_label <- factor(Wrack$trip_label, levels = c("Mar.", "May", "Nov.", "Dec."))
+
+# Pplot 
+Wrack %>%
+  ggplot() +
+  aes(x = site, fill = Dominant_species, weight = ellipse_A_m2) +
+  geom_bar() +
+  scale_fill_hue(direction = 1) +
+  theme_minimal() +
+  labs(y = expression("Area of wrack" ~ (m^2)), x = "") +
+  facet_grid(vars(trip_label), vars()) +  
+  ggtitle("Total area of wrack") +
+  labs(fill = "Species") + 
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
+
+
+
 
 
 ```
@@ -113,6 +174,25 @@ ggplot(means_se, aes(x = site, y = mean_hits, fill = species)) +
   theme_minimal() +
   labs(y = "Number of occurences") +
   facet_grid(vars(Trip))
+
+
+
+
+
+# Plot the data with means and standard errors for the number of hits by species by site over time
+ggplot(means_se, aes(x = site, y = mean_hits, fill = species)) +
+  geom_bar(position = position_dodge(width = 1), stat = "identity") +
+  geom_errorbar(aes(ymin = mean_hits - se_hits, ymax = mean_hits + se_hits),
+                position = position_dodge(width = 1), width = 0.25) +
+  scale_fill_hue(direction = 1) +
+  theme_minimal() +
+  labs(y = "Number of occurrences") +
+  facet_grid(vars(Trip)) +
+  ggtitle("Mean occurence of of  Species and Site Over Time") +  # Add title
+  theme(legend.title = element_text(face = "bold"),  # Capitalize legend
+        panel.border = element_rect(color = "black", fill = NA, size = 1))  # Add thin black frame around the graph
+
+
 
 
 
@@ -179,3 +259,37 @@ ggplot(timed) +
  facet_grid(vars(Trip), 
  vars())
 ```
+
+#Ab food retention
+```{r}
+food<-read.csv("ab_food_retention.csv", header = T)
+view(food)
+food$Cycle<-as.factor(food$Cycle)
+food$Site<-as.factor(food$Site)
+esquisse::esquisser()
+
+
+
+ggplot(food) +
+ aes(x = Cycle, weight = Observation) +
+ geom_bar(fill = "#112446") +
+ theme_minimal()
+
+esquisse::esquisser()
+
+
+
+ggplot(food) +
+ aes(x = Food, y = Observation) +
+ geom_col(fill = "#112446") +
+ theme_minimal()
+
+
+```
+
+
+
+
+
+
+
