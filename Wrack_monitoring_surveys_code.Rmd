@@ -65,6 +65,50 @@ Wrack %>%
 
 #### M. pyrifera is the dominant species in wrack piles 
 
+
+
+
+####################make graph for manuscript#######################################3
+# Remove NA from species
+Wrack <- subset(Wrack, Dominant_species != "na")
+# Replace trips for  month
+Wrack <- Wrack %>%
+  mutate(trip_label = case_when(
+    trip == "1" ~ "Mar.",
+    trip == "2" ~ "May",
+    trip == "3" ~ "Sep.",
+    trip == "4" ~ "Dec.",
+    TRUE ~ as.character(trip)))
+
+# keep labels in chronological order
+Wrack$trip_label <- factor(Wrack$trip_label, levels = c("Mar.", "May", "Sep.", "Dec."))
+
+# Pplot 
+wrack_piles <-Wrack %>%
+  ggplot() +
+  aes(x = site, fill = Dominant_species, weight = ellipse_A_m2) +
+  geom_bar() +
+  scale_fill_hue(direction = 1) +
+  theme_minimal() +
+  labs(y = expression("Area of wrack" ~ (m^2)), x = "") +
+  facet_grid(vars(trip_label), vars()) +  
+  ggtitle("Total area of wrack") +
+  labs(fill = "Dominant species") + 
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
+  theme(
+    axis.text = element_text(size = 14),   
+    axis.title = element_text(size = 15),    
+    plot.title = element_text(size = 18),     
+    legend.title = element_text(size = 16), 
+    legend.text = element_text(size = 14),  
+    strip.text = element_text(size = 14))
+
+wrack_piles
+
+
+
+
+
 #Q2
 horneri<-subset(Wrack, sarg == "y")
 view(horneri)
@@ -96,55 +140,13 @@ print(horneri_summary)
 ```
 
 
-##Manuscript figure 
-```{r}
-#####make graph for manuscript
-# Remove NA from species
-Wrack <- subset(Wrack, Dominant_species != "na")
-# Replace trips for  month
-Wrack <- Wrack %>%
-  mutate(trip_label = case_when(
-    trip == "1" ~ "Mar.",
-    trip == "2" ~ "May",
-    trip == "3" ~ "Sep.",
-    trip == "4" ~ "Dec.",
-    TRUE ~ as.character(trip)
-  ))
-
-# keep labels in chronological order
-Wrack$trip_label <- factor(Wrack$trip_label, levels = c("Mar.", "May", "Sep.", "Dec."))
-
-# Pplot 
-wrack_piles <-Wrack %>%
-  ggplot() +
-  aes(x = site, fill = Dominant_species, weight = ellipse_A_m2) +
-  geom_bar() +
-  scale_fill_hue(direction = 1) +
-  theme_minimal() +
-  labs(y = expression("Area of wrack" ~ (m^2)), x = "") +
-  facet_grid(vars(trip_label), vars()) +  
-  ggtitle("Total area of wrack") +
-  labs(fill = "Dominant species") + 
-  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))
-
-wrack_piles
-
-wrack_piles +
-  theme(
-    axis.text = element_text(size = 14),   
-    axis.title = element_text(size = 15),    
-    plot.title = element_text(size = 18),     
-    legend.title = element_text(size = 16), 
-    legend.text = element_text(size = 14),  
-    strip.text = element_text(size = 14)      
-  )
-
-```
-
-
 #Beach wrack (Dugan)
 ```{r}
 
+#Q1 how many seaweed fragments are found per length of beach?
+
+
+#Q1
 #load data
 beachwrack<-read.csv("beach_wrack.csv", header = T)
 beachwrack$Trip<-as.factor(beachwrack$Trip)
@@ -157,7 +159,7 @@ beachwrack<- subset(beachwrack, site != "Bachelor")
 beachwrack_hits <- subset(beachwrack, hits != 0)
 
 
-#look at hits by species per site
+#number of concurrences per site by species
 ggplot(beachwrack_hits) +
  aes(x = site, fill = species, weight = hits) +
  geom_bar(position = "dodge") +
@@ -172,19 +174,6 @@ means_se <- beachwrack %>%
   summarize(mean_hits = mean(hits),
             se_hits = sd(hits) / sqrt(n()))
 
-# Plot the data with means and standard errors for number of hits by species by site over time
-ggplot(means_se, aes(x = site, y = mean_hits, fill = species)) +
-  geom_bar(position = position_dodge(width = 1), stat = "identity") +
-  geom_errorbar(aes(ymin = mean_hits - se_hits, ymax = mean_hits + se_hits),
-                position = position_dodge(width = 1), width = 0.25) +
-  scale_fill_hue(direction = 1) +
-  theme_minimal() +
-  labs(y = "Number of occurences") +
-  facet_grid(vars(Trip))
-
-
-
-
 
 # Plot the data with means and standard errors for the number of hits by species by site over time
 ggplot(means_se, aes(x = site, y = mean_hits, fill = species)) +
@@ -195,9 +184,58 @@ ggplot(means_se, aes(x = site, y = mean_hits, fill = species)) +
   theme_minimal() +
   labs(y = "Number of occurrences") +
   facet_grid(vars(Trip)) +
-  ggtitle("Mean occurence of of  Species and Site Over Time") +  # Add title
-  theme(legend.title = element_text(face = "bold"),  # Capitalize legend
-        panel.border = element_rect(color = "black", fill = NA, size = 1))  # Add thin black frame around the graph
+  ggtitle("Mean occurence of of  Species and Site Over Time") +  
+  theme(legend.title = element_text(face = "bold"),  
+        panel.border = element_rect(color = "black", fill = NA, size = 1))  
+
+
+#Now lets look at how many hits per meter of beach to answer our original question
+
+############################graph for manuscript#########################################
+
+#sub out all the the 16 length rows because these are the rows that contain the data for hits/length of beach
+hits_per_L<-subset(beachwrack, length == "16")
+
+
+# Calculate means and standard errors for hits
+hits_means_se <- hits_per_L %>%
+  group_by(site, species, Trip) %>%
+  summarize(mean_hits = mean(hits_per_beach),
+            se_hits = sd(hits_per_beach) / sqrt(n()))
+
+#change the trip labels
+hits_means_se <- hits_means_se %>%
+  mutate(trip_label = case_when(
+    Trip == "1" ~ "Mar.",
+    Trip == "2" ~ "May",
+    Trip == "3" ~ "Sep.",
+    Trip == "4" ~ "Dec.",
+    TRUE ~ as.character(Trip)))
+# keep labels in chronological order
+hits_means_se$trip_label <- factor(hits_means_se$trip_label, levels = c("Mar.", "May", "Sep.", "Dec."))
+
+
+seaweed_fragments <-ggplot(hits_means_se, aes(x = site, y = mean_hits, fill = species)) +
+  geom_bar(position = position_dodge(width = 1), stat = "identity") +
+  geom_errorbar(aes(ymin = mean_hits - se_hits, ymax = mean_hits + se_hits),
+                position = position_dodge(width = 1), width = 0.25) +
+  scale_fill_hue(direction = 1) +
+  theme_minimal() +
+  labs(y = "Seaweed fragments per meter of beach", x = "") +
+  facet_grid(vars(trip_label)) +
+   labs(fill = "Species") + 
+  ggtitle("") +  
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
+  theme(
+    axis.text = element_text(size = 14),   
+    axis.title = element_text(size = 15),    
+    plot.title = element_text(size = 18),     
+    legend.title = element_text(size = 16), 
+    legend.text = element_text(size = 14),  
+    strip.text = element_text(size = 14))
+
+
+seaweed_fragments
 
 
 
@@ -210,16 +248,37 @@ frag_means_se <- beachwrack %>%
   group_by(species, Trip, length) %>%
   summarize(frag_means_se = mean(hits),
             frag_se_hits = sd(hits) / sqrt(n()))
+#change the trip labels
+frag_means_se <- frag_means_se %>%
+  mutate(trip_label = case_when(
+    Trip == "1" ~ "Mar.",
+    Trip == "2" ~ "May",
+    Trip == "3" ~ "Sep.",
+    Trip == "4" ~ "Dec.",
+    TRUE ~ as.character(Trip)))
+# keep labels in chronological order
+frag_means_se$trip_label <- factor(frag_means_se$trip_label, levels = c("Mar.", "May", "Sep.", "Dec."))
 
-ggplot(frag_means_se, aes(x = length, y = frag_means_se, fill = species)) +
+
+
+frag_size <-ggplot(frag_means_se, aes(x = length, y = frag_means_se, fill = species)) +
   geom_bar(position = position_dodge(width = 1), stat = "identity") +
   geom_errorbar(aes(ymin = frag_means_se - frag_se_hits, ymax = frag_means_se + frag_se_hits),
                 position = position_dodge(width = 1), width = 0.25) +
    scale_fill_hue(direction = 1) +
  labs(x = "Fragment length (mm)", y = "Number of occurences", fill = "Species") +
  theme_minimal() +
- facet_grid(vars(Trip), vars())
+    theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
+  theme(
+    axis.text = element_text(size = 14),   
+    axis.title = element_text(size = 15),    
+    plot.title = element_text(size = 18),     
+    legend.title = element_text(size = 16), 
+    legend.text = element_text(size = 14),  
+    strip.text = element_text(size = 14)) +
+ facet_grid(vars(trip_label), vars())
 
+frag_size
 
 
 
@@ -234,15 +293,38 @@ length_means <- length_survey %>%
   group_by(Trip, site, species) %>%
   summarize(seaweed_per_beach_mean = mean(seaweed_per_beach),
             length_se = sd(seaweed_per_beach) / sqrt(n()))
+#change the trip labels
+length_means <- length_means %>%
+  mutate(trip_label = case_when(
+    Trip == "1" ~ "Mar.",
+    Trip == "2" ~ "May",
+    Trip == "3" ~ "Sep.",
+    Trip == "4" ~ "Dec.",
+    TRUE ~ as.character(Trip)))
+# keep labels in chronological order
+length_means$trip_label <- factor(length_means$trip_label, levels = c("Mar.", "May", "Sep.", "Dec."))
 
-ggplot(length_means, aes(x = site, fill = species, y = seaweed_per_beach_mean)) +
+
+
+
+frag_length<- ggplot(length_means, aes(x = site, fill = species, y = seaweed_per_beach_mean)) +
 geom_bar(position = position_dodge(width = 1), stat = "identity") +
   geom_errorbar(aes(ymin = seaweed_per_beach_mean - length_se, ymax = seaweed_per_beach_mean + length_se),
                 position = position_dodge(width = 1), width = 0.25) +
  scale_fill_hue(direction = 1) +
    labs(x = "Site", y = "Length of seaweed per length of beach (m)", fill = "Species") +
  theme_minimal() +
- facet_grid(vars(Trip), vars())
+    theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
+  theme(
+    axis.text = element_text(size = 14),   
+    axis.title = element_text(size = 15),    
+    plot.title = element_text(size = 18),     
+    legend.title = element_text(size = 16), 
+    legend.text = element_text(size = 14),  
+    strip.text = element_text(size = 14)) +
+ facet_grid(vars(trip_label), vars())
+
+frag_length
 
 
 ```
