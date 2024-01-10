@@ -312,7 +312,7 @@ geom_bar(position = position_dodge(width = 1), stat = "identity") +
   geom_errorbar(aes(ymin = seaweed_per_beach_mean - length_se, ymax = seaweed_per_beach_mean + length_se),
                 position = position_dodge(width = 1), width = 0.25) +
  scale_fill_hue(direction = 1) +
-   labs(x = "Site", y = "Length of seaweed per length of beach (m)", fill = "Species") +
+   labs(x = "", y = "Length of seaweed per length of beach (m)", fill = "Species") +
  theme_minimal() +
     theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
   theme(
@@ -347,6 +347,32 @@ ggplot(timed) +
    labs(y = "Number of S. horneri occurences") +
  facet_grid(vars(Trip), 
  vars())
+
+
+
+# mean and SE
+mean_percent <- mean(horneri$percent)
+se_percent <- sd(horneri$percent) / sqrt(length(horneri$percent))
+
+#results
+cat(mean_percent, "\n")
+cat(se_percent, "\n")
+
+##S. horneri consisted of 2.4 +/- 1.6% of the surface area of wrack piles
+
+
+# lets look at this by site at each time point 
+horneri_timed <- timed %>%
+  group_by(Trip, Site) %>%
+  summarize(
+    mean = mean(length),
+    se = sd(length) / sqrt(n()))
+# Print the summary
+view(horneri_timed)
+
+#S. horneri consisted of 4.8 +/- 3.3% during March and 0.6 +/- 0.4% in May
+
+
 ```
 
 #Ab food retention
@@ -355,6 +381,8 @@ food<-read.csv("ab_food_retention.csv", header = T)
 view(food)
 food$Cycle<-as.factor(food$Cycle)
 food$Site<-as.factor(food$Site)
+food$LL_classification<-as.factor(food$LL_classification)
+
 esquisse::esquisser()
 
 
@@ -364,14 +392,52 @@ ggplot(food) +
  geom_bar(fill = "#112446") +
  theme_minimal()
 
+
+
+
+
+
+food %>%
+ filter(!(Cycle %in% c("3", "4", "6", "7", "8"))) %>%
+ggplot() +
+ aes(x = LL_classification, y = Observation, fill = Climate) +
+ geom_bar(fill = "#112446") +
+ theme_minimal()
+
+
+
+
+
+
+food<-read.csv("ab_food_retention.csv", header = T)
+view(food)
+food$Cycle<-as.factor(food$Cycle)
+food$Site<-as.factor(food$Site)
+food$LL_classification<-as.factor(food$LL_classification)
+
+
+#sum observations by date
+abs_feeding_per_day <- food %>%
+  group_by(Date, Site, Year.Sampled, LL_classification, Climate) %>%
+  summarize(total_observations = sum(Observation))
+
+
+
 esquisse::esquisser()
 
+ 
 
 
-ggplot(food) +
- aes(x = Food, y = Observation) +
- geom_col(fill = "#112446") +
+abs_feeding_per_day %>%
+ filter(!(Year.Sampled %in% c("1989-1991", "1983-1984", "1987", "1988", "1985-1986"
+))) %>%
+ ggplot() +
+ aes(x = LL_classification, y = total_observations, fill = Climate) +
+ geom_col() +
+ scale_fill_hue(direction = 1) +
  theme_minimal()
+
+
 
 
 ```
