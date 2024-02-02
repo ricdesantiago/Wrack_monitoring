@@ -93,7 +93,7 @@ wrack_piles <-Wrack %>%
   labs(y = expression("Area of wrack" ~ (m^2)), x = "") +
   facet_grid(vars(trip_label), vars()) +  
   ggtitle("Total area of wrack") +
-  labs(fill = "Dominant species") + 
+  labs(fill = "Species") + 
   theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
   theme(
     axis.text = element_text(size = 14),   
