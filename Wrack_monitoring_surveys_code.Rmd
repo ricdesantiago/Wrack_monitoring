@@ -29,9 +29,9 @@ library(glmm)
 library(HH)
 library(ggpubr)
 library(rstatix)
+library(maps)
 #hi
 ```
-
 
 # Wrack line surveys (ellipse)
 ```{r}
@@ -45,28 +45,12 @@ library(rstatix)
 #Q1 
 #upload data 
 Wrack <- read.csv("wrack_line_survey.csv") 
+
+#remove 2020 since 1) we only measured length ad width for these and 2) this data is already published in DeSantiago et al.  2024
 Wrack<-subset(Wrack, !year== "2020")
 Wrack$trip<-as.factor(Wrack$trip)
 # Subset the data to remove NAs
 Wrack <- subset(Wrack, Dominant_species != "na")
-
-
-#quick look at total wrack area by site over time showing the dominant species of the pile
-Wrack %>%
-  ggplot() +
-  aes(x = site, fill = Dominant_species, weight = ellipse_A_m2) +
-  geom_bar() +
-  scale_fill_hue(direction = 1) +
-  theme_minimal() +
-  labs(y = "Area wrack area (m^2)", x = "") +
-  facet_grid(vars(trip), vars()) +
-  ggtitle("Total area of wrack") +  
-  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5))  
-
-#### M. pyrifera is the dominant species in wrack piles 
-
-
-
 
 ####################make graph for manuscript#######################################3
 # Remove NA from species
@@ -89,7 +73,7 @@ wrack_piles <-Wrack %>%
   aes(x = site, fill = Dominant_species, weight = ellipse_A_m2) +
   geom_bar() +
   scale_fill_hue(direction = 1) +
-  theme_minimal() +
+  theme_classic() +
   labs(y = expression("Area of wrack" ~ (m^2)), x = "") +
   facet_grid(vars(trip_label), vars()) +  
   ggtitle("Total area of wrack") +
@@ -101,17 +85,49 @@ wrack_piles <-Wrack %>%
     plot.title = element_text(size = 18),     
     legend.title = element_text(size = 16), 
     legend.text = element_text(size = 14),  
-    strip.text = element_text(size = 14))
+    strip.text = element_text(size = 14)) +
+ theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        text = element_text(family = "Times New Roman"))
 
 wrack_piles
 
 
+ggplot(Wrack) +
+ aes(x = trip, fill = ellipse_A_m2, weight = site) +
+ geom_bar(position = "dodge") +
+ scale_fill_hue(direction = 1) +
+ theme_minimal() 
 
+
+# Check the structure of your data
+str(seaweed_data)
+
+```
+##analysis
+```{r}
+#  analysis
+# First, visualize the distribution of seaweed pile area across different trips
+ggplot(Wrack, aes(x = factor(trip), y = ellipse_A_m2)) +
+  geom_boxplot() +
+  xlab("Trip") +
+  ylab("Seaweed Pile Area (m^2)") +
+  ggtitle("Distribution of Seaweed Pile Area Across Trips")
+
+#data do not fit anova assumptions, we can perform KW non-parametric test
+kruskal_test_result <- kruskal.test(ellipse_A_m2 ~ factor(trip), data = Wrack)
+
+# Check the Kruskal-Wallis test results
+kruskal_test_result
+
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn <- dunn.test::dunn.test(Wrack$ellipse_A_m2, g = Wrack$trip, method = "bonferroni")
 
 
 #Q2
 horneri<-subset(Wrack, sarg == "y")
 view(horneri)
+horneri$percent<-as.numeric(horneri$percent)
 
 # mean and SE
 mean_percent <- mean(horneri$percent)
@@ -134,7 +150,7 @@ horneri_summary <- horneri %>%
 # Print the summary
 print(horneri_summary)
 
-#S. horneri consisted of 4.8 +/- 3.3% during March and 0.6 +/- 0.4% in May
+#S. horneri consisted of 2.51 +/- 1.73% during March and 0.29 +/- 0.213% in May
 
 
 ```
@@ -151,7 +167,7 @@ print(horneri_summary)
 beachwrack<-read.csv("beach_wrack.csv", header = T)
 beachwrack$Trip<-as.factor(beachwrack$Trip)
 beachwrack$length<-as.factor(beachwrack$length)
-beachwrack$seaweed_per_beach<-as.numeric(beachwrack$seaweed_per_beach)
+beachwrack$seaweed_m_per_beach_m<-as.numeric(beachwrack$seaweed_m_per_beach_m)
 beachwrack<- subset(beachwrack, site != "Bachelor")
 
 #lets explore look at seaweed hits on the transect by site by species over time at each site
@@ -166,79 +182,6 @@ ggplot(beachwrack_hits) +
  scale_fill_hue(direction = 1) +
  theme_minimal() +
  facet_grid(vars(), vars(Trip))
-
-
-# Calculate means and standard errors for hits
-means_se <- beachwrack %>%
-  group_by(site, species, Trip) %>%
-  summarize(mean_hits = mean(hits),
-            se_hits = sd(hits) / sqrt(n()))
-
-
-# Plot the data with means and standard errors for the number of hits by species by site over time
-ggplot(means_se, aes(x = site, y = mean_hits, fill = species)) +
-  geom_bar(position = position_dodge(width = 1), stat = "identity") +
-  geom_errorbar(aes(ymin = mean_hits - se_hits, ymax = mean_hits + se_hits),
-                position = position_dodge(width = 1), width = 0.25) +
-  scale_fill_hue(direction = 1) +
-  theme_minimal() +
-  labs(y = "Number of occurrences") +
-  facet_grid(vars(Trip)) +
-  ggtitle("Mean occurence of of  Species and Site Over Time") +  
-  theme(legend.title = element_text(face = "bold"),  
-        panel.border = element_rect(color = "black", fill = NA, size = 1))  
-
-
-#Now lets look at how many hits per meter of beach to answer our original question
-
-############################graph for manuscript#########################################
-
-#sub out all the the 16 length rows because these are the rows that contain the data for hits/length of beach
-hits_per_L<-subset(beachwrack, length == "16")
-
-
-# Calculate means and standard errors for hits
-hits_means_se <- hits_per_L %>%
-  group_by(site, species, Trip) %>%
-  summarize(mean_hits = mean(hits_per_beach),
-            se_hits = sd(hits_per_beach) / sqrt(n()))
-
-#change the trip labels
-hits_means_se <- hits_means_se %>%
-  mutate(trip_label = case_when(
-    Trip == "1" ~ "Mar.",
-    Trip == "2" ~ "May",
-    Trip == "3" ~ "Sep.",
-    Trip == "4" ~ "Dec.",
-    TRUE ~ as.character(Trip)))
-# keep labels in chronological order
-hits_means_se$trip_label <- factor(hits_means_se$trip_label, levels = c("Mar.", "May", "Sep.", "Dec."))
-
-
-seaweed_fragments <-ggplot(hits_means_se, aes(x = site, y = mean_hits, fill = species)) +
-  geom_bar(position = position_dodge(width = 1), stat = "identity") +
-  geom_errorbar(aes(ymin = mean_hits - se_hits, ymax = mean_hits + se_hits),
-                position = position_dodge(width = 1), width = 0.25) +
-  scale_fill_hue(direction = 1) +
-  theme_minimal() +
-  labs(y = "Seaweed fragments per meter of beach", x = "") +
-  facet_grid(vars(trip_label)) +
-   labs(fill = "Species") + 
-  ggtitle("") +  
-  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
-  theme(
-    axis.text = element_text(size = 14),   
-    axis.title = element_text(size = 15),    
-    plot.title = element_text(size = 18),     
-    legend.title = element_text(size = 16), 
-    legend.text = element_text(size = 14),  
-    strip.text = element_text(size = 14))
-
-
-seaweed_fragments
-
-
-
 
 
 #lets look at number of occurences by length of seaweed fragment
@@ -267,8 +210,8 @@ frag_size <-ggplot(frag_means_se, aes(x = length, y = frag_means_se, fill = spec
                 position = position_dodge(width = 1), width = 0.25) +
    scale_fill_hue(direction = 1) +
  labs(x = "Fragment length (mm)", y = "Number of occurences", fill = "Species") +
- theme_minimal() +
-    theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
+ theme_classic() +
+ theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
   theme(
     axis.text = element_text(size = 14),   
     axis.title = element_text(size = 15),    
@@ -276,13 +219,137 @@ frag_size <-ggplot(frag_means_se, aes(x = length, y = frag_means_se, fill = spec
     legend.title = element_text(size = 16), 
     legend.text = element_text(size = 14),  
     strip.text = element_text(size = 14)) +
+ theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        text = element_text(family = "Times New Roman")) +
  facet_grid(vars(trip_label), vars())
 
 frag_size
 
+```
+
+##fragment frequency
+```{r}
+########################################
+#Now lets look at how many hits per meter of beach to answer our original question########################################
+#load data
+beachwrack<-read.csv("beach_wrack.csv", header = T)
+beachwrack$Trip<-as.factor(beachwrack$Trip)
+beachwrack$length<-as.factor(beachwrack$length)
+beachwrack$seaweed_m_per_beach_m<-as.numeric(beachwrack$seaweed_m_per_beach_m)
+beachwrack<- subset(beachwrack, site != "Bachelor")
+
+#sub out all the the 16 length rows because these are the rows that contain the data for hits/length of beach
+hits_per_L<-subset(beachwrack, length == "16")
 
 
+
+####graph######
+# Calculate means and standard errors for hits
+hits_means_se <- hits_per_L %>%
+  group_by(site, species, Trip) %>%
+  summarize(mean_hits = mean(hits_per_m_beach),
+            se_hits = sd(hits_per_m_beach) / sqrt(n()))
+
+#change the trip labels
+hits_means_se <- hits_means_se %>%
+  mutate(trip_label = case_when(
+    Trip == "1" ~ "Mar.",
+    Trip == "2" ~ "May",
+    Trip == "3" ~ "Sep.",
+    Trip == "4" ~ "Dec.",
+    TRUE ~ as.character(Trip)))
+# keep labels in chronological order
+hits_means_se$trip_label <- factor(hits_means_se$trip_label, levels = c("Mar.", "May", "Sep.", "Dec."))
+
+
+seaweed_fragments <-ggplot(hits_means_se, aes(x = site, y = mean_hits, fill = species)) +
+  geom_bar(position = position_dodge(width = 1), stat = "identity") +
+  geom_errorbar(aes(ymin = mean_hits - se_hits, ymax = mean_hits + se_hits),
+                position = position_dodge(width = 1), width = 0.25) +
+  scale_fill_hue(direction = 1) +
+  theme_classic() +
+  labs(y = "Seaweed fragments per meter of beach", x = "") +
+  facet_grid(vars(trip_label)) +
+   labs(fill = "Species") + 
+  ggtitle("") +  
+ theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
+  theme(
+    axis.text = element_text(size = 14),   
+    axis.title = element_text(size = 15),    
+    plot.title = element_text(size = 18),     
+    legend.title = element_text(size = 16), 
+    legend.text = element_text(size = 14),  
+    strip.text = element_text(size = 14)) +
+ theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        text = element_text(family = "Times New Roman"))
+
+seaweed_fragments
+
+
+# First, visualize the distribution of fragments across different trips
+ggplot(hits_per_L, aes(x = factor(Trip), y = hits_per_m_beach)) +
+  geom_boxplot() +
+  xlab("Trip") +
+  ylab("Seaweed fragments per meter of beach by trip") 
+
+#data do not fit anova assumptions, we can perform KW non-parametric test
+frag_kruskal_test <- kruskal.test(hits_per_m_beach ~ factor(Trip), data = hits_per_L)
+
+frag_kruskal_test
+
+
+##########################do they differ by site?##############################
+# First, visualize the distribution of fragments across different trips
+ggplot(hits_per_L, aes(x = factor(site), y = hits_per_m_beach)) +
+  geom_boxplot() +
+  xlab("site") +
+  ylab("Seaweed fragments per meter of beach by site") 
+
+#data do not fit anova assumptions, we can perform KW non-parametric test
+frag_kruskal_test2 <- kruskal.test(hits_per_m_beach ~ factor(site), data = hits_per_L)
+
+frag_kruskal_test2
+
+
+#####################Does sargassum occur through time?##########################
+
+sarg_frags<-subset(hits_per_L, species == "S. horneri")
+
+
+# Example histogram for a variable 'x'
+hist(sarg_frags$hits_per_m_beach, main="Histogram of x")
+#not much sargassum. 
+
+#is kelp significantly higher than sargassum? should just run a t test for formality, theres clearly more kelp
+
+t.test(data = hits_per_L, hits_per_m_beach ~ species)
+
+#does sargassum differ over time?
+sarg_anova<- aov(hits_per_m_beach ~ Trip, data = sarg_frags)
+summary(sarg_anova)
+
+######does seaweed differ between sites in september?
+
+sarg_sep<-subset(sarg_frags, Trip == "3")
+
+sarg_sep_anova<-aov(hits_per_m_beach ~ site, data = sarg_sep)
+summary(sarg_sep_anova)
+
+
+
+
+
+
+
+
+##############################################################################
 #lets look at length of seaweed per length of beach in terms of meters of wrack per meters of sandy beach
+#load data
+beachwrack<-read.csv("beach_wrack.csv", header = T)
+beachwrack$Trip<-as.factor(beachwrack$Trip)
+beachwrack$length<-as.factor(beachwrack$length)
+beachwrack$seaweed_m_per_beach_m<-as.numeric(beachwrack$seaweed_m_per_beach_m)
+beachwrack<- subset(beachwrack, site != "Bachelor")
 
 #since all the values are placed along the column that IDs 16mm seaweeds we can use that to subset those and not deal with the other NA'd columns
 length_survey<-subset(beachwrack, length == "16")
@@ -291,8 +358,8 @@ view(length_survey)
 #create mean and se for graphs
 length_means <- length_survey %>%
   group_by(Trip, site, species) %>%
-  summarize(seaweed_per_beach_mean = mean(seaweed_per_beach),
-            length_se = sd(seaweed_per_beach) / sqrt(n()))
+  summarize(seaweed_per_beach_mean = mean(seaweed_m_per_beach_m),
+            length_se = sd(seaweed_m_per_beach_m) / sqrt(n()))
 #change the trip labels
 length_means <- length_means %>%
   mutate(trip_label = case_when(
@@ -312,9 +379,9 @@ geom_bar(position = position_dodge(width = 1), stat = "identity") +
   geom_errorbar(aes(ymin = seaweed_per_beach_mean - length_se, ymax = seaweed_per_beach_mean + length_se),
                 position = position_dodge(width = 1), width = 0.25) +
  scale_fill_hue(direction = 1) +
-   labs(x = "", y = "Length of seaweed per length of beach (m)", fill = "Species") +
- theme_minimal() +
-    theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
+   labs(x = "", y = "Length of seaweed (m) per length of beach (m)", fill = "Species") +
+ theme_classic() +
+ theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
   theme(
     axis.text = element_text(size = 14),   
     axis.title = element_text(size = 15),    
@@ -322,9 +389,34 @@ geom_bar(position = position_dodge(width = 1), stat = "identity") +
     legend.title = element_text(size = 16), 
     legend.text = element_text(size = 14),  
     strip.text = element_text(size = 14)) +
+ theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        text = element_text(family = "Times New Roman")) +
  facet_grid(vars(trip_label), vars())
 
 frag_length
+
+#there seems to be more length of seaweed at Red eye and Tender than other sites. Lets run a linear mixed model to test length of seaweed by site and time
+model <- aov(seaweed_m_per_beach_m ~ site * Trip, data = length_survey)
+
+summary(model)
+
+# Assuming your ANOVA model is stored in the 'model' object
+
+# Perform Tukey's HSD test
+tukey_results <- TukeyHSD(model, "site")
+
+# View the results
+print(tukey_results)
+# Install and load the multcompView package if you haven't already
+install.packages("multcompView")
+library(multcompView)
+
+# Create the CLD plot
+CLD_plot <- cld(tukey_results$site)
+
+# Display the plot
+plot(CLD_plot)
+
 
 
 ```
@@ -336,9 +428,6 @@ view(timed)
 
 timed$Trip<-as.factor(timed$Trip)
 
-
-
-library(ggplot2)
 
 ggplot(timed) +
  aes(x = Site, y = occurances) +
@@ -375,16 +464,21 @@ view(horneri_timed)
 
 ```
 
-#Ab food retention
+
+
+
+
+
+
+
+
+
 ```{r}
 food<-read.csv("ab_food_retention.csv", header = T)
 view(food)
 food$Cycle<-as.factor(food$Cycle)
 food$Site<-as.factor(food$Site)
 food$LL_classification<-as.factor(food$LL_classification)
-
-esquisse::esquisser()
-
 
 
 ggplot(food) +
@@ -393,20 +487,12 @@ ggplot(food) +
  theme_minimal()
 
 
-
-
-
-
 food %>%
  filter(!(Cycle %in% c("3", "4", "6", "7", "8"))) %>%
 ggplot() +
  aes(x = LL_classification, y = Observation, fill = Climate) +
  geom_bar(fill = "#112446") +
  theme_minimal()
-
-
-
-
 
 
 food<-read.csv("ab_food_retention.csv", header = T)
