@@ -8,12 +8,13 @@ output: html_document
 # Library
 ```{r}
 library(knitr)
-library(jtools)
+library(patchwork)
 library(tidyverse)
 library(tidyr)
 library(ggplot2)
 library(ggfortify)
 library(lme4)
+library(lmerTest)
 library(car)
 library(nlme)
 library(ggpubr)
@@ -29,7 +30,15 @@ library(glmm)
 library(HH)
 library(ggpubr)
 library(rstatix)
-library(maps)
+library(vegan)
+library(effsize)
+library(broom)
+library(performance)
+library(DHARMa)
+library(glmmTMB)
+library(emmeans)
+library(kableExtra)
+setwd("~/Documents/GitHub/Wrack_monitoring")
 #hi
 ```
 
@@ -68,14 +77,14 @@ Wrack <- Wrack %>%
 Wrack$trip_label <- factor(Wrack$trip_label, levels = c("Mar.", "May", "Sep.", "Dec."))
 
 # Pplot 
-wrack_piles <-Wrack %>%
+wrack_piles <- Wrack %>%
   ggplot() +
-  aes(x = site, fill = Dominant_species, weight = ellipse_A_m2) +
+  aes(x = trip_label, fill = Dominant_species, weight = ellipse_A_m2) +
   geom_bar() +
   scale_fill_hue(direction = 1) +
   theme_classic() +
   labs(y = expression("Area of wrack" ~ (m^2)), x = "") +
-  facet_grid(vars(trip_label), vars()) +  
+  facet_grid(vars(site), vars()) +  
   ggtitle("Total area of wrack") +
   labs(fill = "Species") + 
   theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
@@ -86,23 +95,19 @@ wrack_piles <-Wrack %>%
     legend.title = element_text(size = 16), 
     legend.text = element_text(size = 14),  
     strip.text = element_text(size = 14)) +
- theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5),
-        text = element_text(family = "Times New Roman"))
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        text = element_text(family = "Times New Roman")) +
+  scale_y_continuous(breaks = seq(0, 400, 100)) 
 
 wrack_piles
 
 
-ggplot(Wrack) +
- aes(x = trip, fill = ellipse_A_m2, weight = site) +
- geom_bar(position = "dodge") +
- scale_fill_hue(direction = 1) +
- theme_minimal() 
+ggsave("Figure 2.jpg", plot = wrack_piles, width = 9, height = 8, dpi = 600)
 
 
-# Check the structure of your data
-str(seaweed_data)
 
 ```
+
 ##analysis
 ```{r}
 #  analysis
@@ -122,6 +127,65 @@ kruskal_test_result
 
 #  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
 posthoc_dunn <- dunn.test::dunn.test(Wrack$ellipse_A_m2, g = Wrack$trip, method = "bonferroni")
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn <- dunn.test::dunn.test(Wrack$ellipse_A_m2, g = Wrack$site, method = "bonferroni")
+
+
+
+####now lets test these by time period
+
+########################################## march
+march_wrack<-subset(Wrack, month == "March")
+
+kruskal_test_1 <- kruskal.test(ellipse_A_m2 ~ factor(site), data = march_wrack)
+
+# Check the Kruskal-Wallis test results
+kruskal_test_1
+
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn1 <- dunn.test::dunn.test(march_wrack$ellipse_A_m2, g = march_wrack$site, method = "bonferroni")
+
+
+####################################### may
+may_wrack<-subset(Wrack, month == "May")
+
+kruskal_test_2 <- kruskal.test(ellipse_A_m2 ~ factor(site), data = may_wrack)
+
+# Check the Kruskal-Wallis test results
+kruskal_test_2
+
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn2 <- dunn.test::dunn.test(may_wrack$ellipse_A_m2, g = may_wrack$site, method = "bonferroni")
+
+
+############################################## september
+sep_wrack<-subset(Wrack, month == "September")
+
+kruskal_test_3 <- kruskal.test(ellipse_A_m2 ~ factor(site), data = sep_wrack)
+
+# Check the Kruskal-Wallis test results
+kruskal_test_3
+
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn3 <- dunn.test::dunn.test(sep_wrack$ellipse_A_m2, g = sep_wrack$site, method = "bonferroni")
+
+
+
+############################################## december
+dec_wrack<-subset(Wrack, month == "December")
+
+kruskal_test_4 <- kruskal.test(ellipse_A_m2 ~ factor(site), data = dec_wrack)
+
+# Check the Kruskal-Wallis test results
+kruskal_test_4
+
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn4 <- dunn.test::dunn.test(dec_wrack$ellipse_A_m2, g = dec_wrack$site, method = "bonferroni")
+
 
 
 #Q2
@@ -137,7 +201,7 @@ se_percent <- sd(horneri$percent) / sqrt(length(horneri$percent))
 cat(mean_percent, "\n")
 cat(se_percent, "\n")
 
-##S. horneri consisted of 2.4 +/- 1.6% of the surface area of wrack piles
+##S. horneri consisted of 1.27 +/- 0.81% of the surface area of wrack piles
 
 
 # lets look at this by site at each time point 
@@ -262,14 +326,14 @@ hits_means_se <- hits_means_se %>%
 hits_means_se$trip_label <- factor(hits_means_se$trip_label, levels = c("Mar.", "May", "Sep.", "Dec."))
 
 
-seaweed_fragments <-ggplot(hits_means_se, aes(x = site, y = mean_hits, fill = species)) +
+seaweed_fragments <-ggplot(hits_means_se, aes(x = trip_label, y = mean_hits, fill = species)) +
   geom_bar(position = position_dodge(width = 1), stat = "identity") +
   geom_errorbar(aes(ymin = mean_hits - se_hits, ymax = mean_hits + se_hits),
                 position = position_dodge(width = 1), width = 0.25) +
   scale_fill_hue(direction = 1) +
   theme_classic() +
   labs(y = "Seaweed fragments per meter of beach", x = "") +
-  facet_grid(vars(trip_label)) +
+  facet_grid(vars(site)) +
    labs(fill = "Species") + 
   ggtitle("") +  
  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
@@ -281,39 +345,143 @@ seaweed_fragments <-ggplot(hits_means_se, aes(x = site, y = mean_hits, fill = sp
     legend.text = element_text(size = 14),  
     strip.text = element_text(size = 14)) +
  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5),
-        text = element_text(family = "Times New Roman"))
+        text = element_text(family = "Times New Roman")) +
+  scale_y_continuous(breaks = seq(0, 2, 1)) 
 
 seaweed_fragments
 
 
+#######box plot is more appropriate since we used KW test which compares medians rather than means
+
+seaweed_fragments <- ggplot(hits_per_L, aes(x = Trip, y = hits_per_m_beach, fill = species)) +
+  geom_boxplot(position = position_dodge(width = 1)) +
+  scale_fill_hue(direction = 1) +
+  theme_classic() +
+  labs(y = "Seaweed fragments per meter of beach", x = "") +
+  facet_grid(vars(site)) +
+  labs(fill = "Species") + 
+  ggtitle("") +  
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
+  theme(
+    axis.text = element_text(size = 14),   
+    axis.title = element_text(size = 15),    
+    plot.title = element_text(size = 18),     
+    legend.title = element_text(size = 16), 
+    legend.text = element_text(size = 14),  
+    strip.text = element_text(size = 14)) +
+     scale_x_discrete(
+    limits = c("1", "2", "3", "4"),
+    labels = c("1" = "Mar.", "2" = "May", "3" = "Sep.", "4" = "Dec.")) +
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        text = element_text(family = "Times New Roman")) +
+  scale_y_continuous(breaks = seq(0, 2, 1)) 
+
+seaweed_fragments
+
+
+ggsave("Figure 3.jpg", plot = seaweed_fragments, width = 7, height = 8, dpi = 600)
+
+```
+
+###analysis
+```{r}
+
+
+#because subsetting gives us ALL the 16 colums, it also introduces a lot of zeros. We are interested in #  of the pieces that were there so zero makes no sense, we need to remove.
+# Assuming 'seaweed_m_per_beach_m' is the column where you want to remove zeros
+# Filter out rows where 'seaweed_m_per_beach_m' is not equal to zero
+hits_per_L2 <- hits_per_L[hits_per_L$hits_per_m_beach != 0, ]
+
+
 # First, visualize the distribution of fragments across different trips
-ggplot(hits_per_L, aes(x = factor(Trip), y = hits_per_m_beach)) +
+ggplot(hits_per_L2, aes(x = factor(Trip), y = hits_per_m_beach)) +
   geom_boxplot() +
   xlab("Trip") +
   ylab("Seaweed fragments per meter of beach by trip") 
 
 #data do not fit anova assumptions, we can perform KW non-parametric test
-frag_kruskal_test <- kruskal.test(hits_per_m_beach ~ factor(Trip), data = hits_per_L)
+frag_kruskal_test <- kruskal.test(hits_per_m_beach ~ factor(Trip), data = hits_per_L2)
 
 frag_kruskal_test
 
 
 ##########################do they differ by site?##############################
+
 # First, visualize the distribution of fragments across different trips
-ggplot(hits_per_L, aes(x = factor(site), y = hits_per_m_beach)) +
+ggplot(hits_per_L2, aes(x = factor(site), y = hits_per_m_beach)) +
   geom_boxplot() +
   xlab("site") +
   ylab("Seaweed fragments per meter of beach by site") 
 
 #data do not fit anova assumptions, we can perform KW non-parametric test
-frag_kruskal_test2 <- kruskal.test(hits_per_m_beach ~ factor(site), data = hits_per_L)
+frag_kruskal_test2 <- kruskal.test(hits_per_m_beach ~ factor(site), data = hits_per_L2)
 
 frag_kruskal_test2
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+frag_dunn <- dunn.test::dunn.test(hits_per_L2$hits_per_m_beach, g = hits_per_L2$site, method = "bonferroni")
+
+
+
+
+
+###lets look at time by site
+############################################## Artist
+Artist_frag<-subset(hits_per_L2, site == "Artist")
+
+kruskal_frag1S <- kruskal.test(hits_per_m_beach ~ factor(Trip), data = Artist_frag)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag1S
+
+############################################## Cissy
+Cissy_frag<-subset(hits_per_L2, site == "Cissy")
+
+kruskal_frag2A <- kruskal.test(hits_per_m_beach ~ factor(Trip), data = Cissy_frag)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag2A
+
+
+############################################## Red Eye
+Red_frag<-subset(hits_per_L2, site == "Red Eye")
+
+kruskal_frag3A <- kruskal.test(hits_per_m_beach ~ factor(Trip), data = Red_frag)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag3A
+
+
+
+############################################## Tender
+Ten_frag<-subset(hits_per_L2, site == "Tender")
+
+kruskal_frag4A <- kruskal.test(hits_per_m_beach ~ factor(Trip), data = Ten_frag)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag4A
+
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn4 <- dunn.test::dunn.test(Ten_frag$hits_per_m_beach, g = Ten_frag$Trip, method = "bonferroni")
+
+############################################## Tranquility
+Tran_frag<-subset(hits_per_L2, site == "Tranquility")
+
+kruskal_frag5A <- kruskal.test(hits_per_m_beach ~ factor(Trip), data = Tran_frag)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag5A
+
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn5 <- dunn.test::dunn.test(Tran_frag$hits_per_m_beach, g = Tran_frag$Trip, method = "bonferroni")
+
 
 
 #####################Does sargassum occur through time?##########################
 
-sarg_frags<-subset(hits_per_L, species == "S. horneri")
+sarg_frags<-subset(hits_per_L2, species == "S. horneri")
 
 
 # Example histogram for a variable 'x'
@@ -325,23 +493,88 @@ hist(sarg_frags$hits_per_m_beach, main="Histogram of x")
 t.test(data = hits_per_L, hits_per_m_beach ~ species)
 
 #does sargassum differ over time?
-sarg_anova<- aov(hits_per_m_beach ~ Trip, data = sarg_frags)
-summary(sarg_anova)
 
-######does seaweed differ between sites in september?
+kruskal_sarg <- kruskal.test(hits_per_m_beach ~ factor(Trip), data = sarg_frags)
 
-sarg_sep<-subset(sarg_frags, Trip == "3")
-
-sarg_sep_anova<-aov(hits_per_m_beach ~ site, data = sarg_sep)
-summary(sarg_sep_anova)
+# Check the Kruskal-Wallis test results
+kruskal_sarg
 
 
 
+###lets look at time 
+############################################## march
+march_frag<-subset(hits_per_L2, Trip == "1")
+
+kruskal_frag1 <- kruskal.test(hits_per_m_beach ~ factor(site), data = march_frag)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag1
 
 
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn2 <- dunn.test::dunn.test(march_frag$hits_per_m_beach, g = march_frag$site, method = "bonferroni")
+
+############################################## may
+may_frag<-subset(hits_per_L2, Trip == "2")
+
+kruskal_frag2 <- kruskal.test(hits_per_m_beach ~ factor(site), data = may_frag)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag2
 
 
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn3 <- dunn.test::dunn.test(may_frag$hits_per_m_beach, g = may_frag$site, method = "bonferroni")
 
+############################################## september
+sep_frag<-subset(hits_per_L2, Trip == "3")
+
+kruskal_frag3 <- kruskal.test(hits_per_m_beach ~ factor(site), data = sep_frag)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag3
+
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn3 <- dunn.test::dunn.test(sep_frag$hits_per_m_beach, g = sep_frag$site, method = "bonferroni")
+
+############################################## december
+dec_frag<-subset(hits_per_L2, Trip == "4")
+
+kruskal_frag4 <- kruskal.test(hits_per_m_beach ~ factor(site), data = dec_frag)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag4
+
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn4 <- dunn.test::dunn.test(dec_frag$hits_per_xm_beach, g = dec_frag$site, method = "bonferroni")
+
+
+#####################Does sargassum occur through time?##########################
+
+sarg_frags<-subset(hits_per_L2, species == "S. horneri")
+
+
+# Example histogram for a variable 'x'
+hist(sarg_frags$hits_per_m_beach, main="Histogram of x")
+#not much sargassum. 
+
+#is kelp significantly higher than sargassum? should just run a t test for formality, theres clearly more kelp
+
+t.test(data = hits_per_L, hits_per_m_beach ~ species)
+
+#does sargassum differ over time?
+
+kruskal_sarg <- kruskal.test(hits_per_m_beach ~ factor(Trip), data = sarg_frags)
+
+# Check the Kruskal-Wallis test results
+kruskal_sarg
+
+```
+
+##frag length
+```{r}
 ##############################################################################
 #lets look at length of seaweed per length of beach in terms of meters of wrack per meters of sandy beach
 #load data
@@ -354,6 +587,10 @@ beachwrack<- subset(beachwrack, site != "Bachelor")
 #since all the values are placed along the column that IDs 16mm seaweeds we can use that to subset those and not deal with the other NA'd columns
 length_survey<-subset(beachwrack, length == "16")
 view(length_survey)
+
+
+# Now 'filtered_data' contains all rows where 'seaweed_m_per_beach_m' is not zero
+
 
 #create mean and se for graphs
 length_means <- length_survey %>%
@@ -374,7 +611,7 @@ length_means$trip_label <- factor(length_means$trip_label, levels = c("Mar.", "M
 
 
 
-frag_length<- ggplot(length_means, aes(x = site, fill = species, y = seaweed_per_beach_mean)) +
+frag_length<- ggplot(length_means, aes(x = trip_label, fill = species, y = seaweed_per_beach_mean)) +
 geom_bar(position = position_dodge(width = 1), stat = "identity") +
   geom_errorbar(aes(ymin = seaweed_per_beach_mean - length_se, ymax = seaweed_per_beach_mean + length_se),
                 position = position_dodge(width = 1), width = 0.25) +
@@ -391,32 +628,212 @@ geom_bar(position = position_dodge(width = 1), stat = "identity") +
     strip.text = element_text(size = 14)) +
  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5),
         text = element_text(family = "Times New Roman")) +
- facet_grid(vars(trip_label), vars())
+ facet_grid(vars(site), vars())
 
 frag_length
 
+
+#######box plot is more appropriate since we used KW test which compares medians rather than means
+
+frag_length <- ggplot(length_survey, aes(x = Trip, fill = species, y = seaweed_m_per_beach_m)) +
+  geom_boxplot(position = position_dodge(width = 1)) +
+  scale_fill_hue(direction = 1) +
+  labs(x = "", y = "Length of seaweed (m) per length of beach (m)", fill = "Species") +
+  theme_classic() +
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5)) +
+  theme(
+    axis.text = element_text(size = 14),   
+    axis.title = element_text(size = 15),    
+    plot.title = element_text(size = 18),     
+    legend.title = element_text(size = 16), 
+    legend.text = element_text(size = 14),  
+    strip.text = element_text(size = 14)) +
+   scale_x_discrete(
+    limits = c("1", "2", "3", "4"),
+    labels = c("1" = "Mar.", "2" = "May", "3" = "Sep.", "4" = "Dec.")) +
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        text = element_text(family = "Times New Roman")) +
+  facet_grid(vars(site), vars())
+
+frag_length
+
+
+ggsave("Figure 4.jpg", plot = frag_length, width = 7, height = 8, dpi = 600)
+
+```
+
+###analysis
+```{r}
+
+#because subsetting gives us ALL the 16 colums, it also introduces a lot of zeros. We are interested in length of the pieces that were there so zero makes no sense, we need to remove.
+# Assuming 'seaweed_m_per_beach_m' is the column where you want to remove zeros
+# Filter out rows where 'seaweed_m_per_beach_m' is not equal to zero
+length_survey2 <- length_survey[length_survey$seaweed_m_per_beach_m != 0, ]
+
+
 #there seems to be more length of seaweed at Red eye and Tender than other sites. Lets run a linear mixed model to test length of seaweed by site and time
-model <- aov(seaweed_m_per_beach_m ~ site * Trip, data = length_survey)
+model <- aov(seaweed_m_per_beach_m ~ site * Trip, data = length_survey2)
 
 summary(model)
 
-# Assuming your ANOVA model is stored in the 'model' object
+# Q-Q plot
+qqnorm(resid(model))
+qqline(resid(model))
 
-# Perform Tukey's HSD test
-tukey_results <- TukeyHSD(model, "site")
+# Shapiro-Wilk test
+shapiro.test(resid(model))
 
-# View the results
-print(tukey_results)
-# Install and load the multcompView package if you haven't already
-install.packages("multcompView")
-library(multcompView)
+# this model does not pass the assumptions test. we will do a non parametric test
 
-# Create the CLD plot
-CLD_plot <- cld(tukey_results$site)
+kruskal_length <- kruskal.test(seaweed_m_per_beach_m ~ factor(Trip), data = length_survey2)
 
-# Display the plot
-plot(CLD_plot)
+# Check the Kruskal-Wallis test results
+kruskal_length
 
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn_length <- dunn.test::dunn.test(length_survey2$seaweed_m_per_beach_m, g = length_survey2$Trip, method = "bonferroni")
+
+
+#lets look at length of seaweed per length of beach between sites over time
+############################################## march
+mar_frag_l1<-subset(length_survey2, Trip == "1")
+
+kruskal_fragl1 <- kruskal.test(seaweed_m_per_beach_m ~ factor(site), data = mar_frag_l1)
+
+# Check the Kruskal-Wallis test results
+kruskal_fragl1
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunnl1 <- dunn.test::dunn.test(mar_frag_l1$seaweed_m_per_beach_m, g = mar_frag_l1$site, method = "bonferroni")
+
+############################################## may
+may_frag_l2<-subset(length_survey2, Trip == "2")
+
+kruskal_fragl2 <- kruskal.test(seaweed_m_per_beach_m ~ factor(site), data = may_frag_l2)
+
+# Check the Kruskal-Wallis test results
+kruskal_fragl2
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunnl2 <- dunn.test::dunn.test(length_survey2$seaweed_m_per_beach_m, g = length_survey2$site, method = "bonferroni")
+
+############################################## sep
+sep_frag_l3<-subset(length_survey2, Trip == "3")
+
+kruskal_fragl3 <- kruskal.test(seaweed_m_per_beach_m ~ factor(site), data = sep_frag_l3)
+
+# Check the Kruskal-Wallis test results
+kruskal_fragl3
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunnl2 <- dunn.test::dunn.test(sep_frag_l3$seaweed_m_per_beach_m, g = sep_frag_l3$site, method = "bonferroni")
+
+
+############################################## sep
+dec_frag_l4<-subset(length_survey2, Trip == "4")
+
+kruskal_fragl4 <- kruskal.test(seaweed_m_per_beach_m ~ factor(site), data = dec_frag_l4)
+
+# Check the Kruskal-Wallis test results
+kruskal_fragl4
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunnl2 <- dunn.test::dunn.test(dec_frag_l4$seaweed_m_per_beach_m, g = dec_frag_l4$site, method = "bonferroni")
+
+view(dec_frag_l4)
+
+
+
+
+
+
+
+###lets look at time by site
+
+#data do not fit anova assumptions, we can perform KW non-parametric test
+frag_kruskal_test2 <- kruskal.test(seaweed_m_per_beach_m ~ factor(site), data = length_survey2)
+
+frag_kruskal_test2
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+frag_dunn <- dunn.test::dunn.test(length_survey2$seaweed_m_per_beach_m, g = length_survey2$site, method = "bonferroni")
+
+
+
+
+
+############################################## Artist
+Artist_frag_length<-subset(length_survey2, site == "Artist")
+
+kruskal_frag_length1 <- kruskal.test(seaweed_m_per_beach_m ~ factor(Trip), data = Artist_frag_length)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag_length1
+
+############################################## Cissy
+Cissy_frag_length<-subset(length_survey2, site == "Cissy")
+
+kruskal_frag_length2<- kruskal.test(seaweed_m_per_beach_m ~ factor(Trip), data = Cissy_frag_length)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag_length2
+
+
+############################################## Red Eye
+Red_frag_length<-subset(length_survey2, site == "Red Eye")
+
+kruskal_frag_length3<- kruskal.test(seaweed_m_per_beach_m ~ factor(Trip), data = Red_frag_length)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag_length3
+
+
+
+############################################## Tender
+Ten_frag_length<-subset(length_survey2, site == "Tender")
+
+kruskal_frag_length4 <- kruskal.test(seaweed_m_per_beach_m ~ factor(Trip), data = Ten_frag_length)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag_length4
+
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunnL4 <- dunn.test::dunn.test(Ten_frag_length$hits_per_m_beach, g = Ten_frag_length$Trip, method = "bonferroni")
+
+############################################## Tranquility
+Tran_frag<-subset(hits_per_L2, site == "Tranquility")
+
+kruskal_frag5A <- kruskal.test(hits_per_m_beach ~ factor(Trip), data = Tran_frag)
+
+# Check the Kruskal-Wallis test results
+kruskal_frag5A
+
+
+#  post hoc pairwise comparisons using Dunn's test with Bonferroni correction
+posthoc_dunn5 <- dunn.test::dunn.test(Tran_frag$hits_per_m_beach, g = Tran_frag$Trip, method = "bonferroni")
+
+
+
+
+
+
+#does sargassum differ over time?
+
+sarg_frags<-subset(hits_per_L2, species == "S. horneri")
+
+kruskal_sarg <- kruskal.test(seaweed_m_per_beach_m ~ factor(Trip), data = sarg_frags)
+
+# Check the Kruskal-Wallis test results
+kruskal_sarg
+
+#by site in september?
+
+sarg_frag_L_sep<-subset(sarg_frags, Trip == "3")
+kruskal_sarg <- kruskal.test(seaweed_m_per_beach_m ~ factor(site), data = sarg_frag_L_sep)
+
+# Check the Kruskal-Wallis test results
+kruskal_sarg
 
 
 ```
