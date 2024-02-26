@@ -37,7 +37,6 @@ library(performance)
 library(DHARMa)
 library(glmmTMB)
 library(emmeans)
-library(kableExtra)
 setwd("~/Documents/GitHub/Wrack_monitoring")
 #hi
 ```
@@ -53,13 +52,11 @@ setwd("~/Documents/GitHub/Wrack_monitoring")
 
 #Q1 
 #upload data 
-Wrack <- read.csv("wrack_line_survey.csv") 
+Wrack <- read.csv("wrack_line_survey.csv")
 
 #remove 2020 since 1) we only measured length ad width for these and 2) this data is already published in DeSantiago et al.  2024
 Wrack<-subset(Wrack, !year== "2020")
 Wrack$trip<-as.factor(Wrack$trip)
-# Subset the data to remove NAs
-Wrack <- subset(Wrack, Dominant_species != "na")
 
 ####################make graph for manuscript#######################################3
 # Remove NA from species
@@ -102,7 +99,39 @@ wrack_piles <- Wrack %>%
 wrack_piles
 
 
-ggsave("Figure 2.jpg", plot = wrack_piles, width = 9, height = 8, dpi = 600)
+#rearrange the order of sites 
+
+site_order <- c("Bachelor", "Cosign", "Red Eye", "Tender", "Tranquility", "Cissy", "Artist")
+
+# Convert the site variable to a factor with specified order
+Wrack$site <- factor(Wrack$site, levels = site_order)
+
+# Plot with the rearranged order of sites
+wrack_piles <- Wrack %>%
+  ggplot() +
+  aes(x = trip_label, fill = Dominant_species, weight = ellipse_A_m2) +
+  geom_bar() +
+  scale_fill_hue(direction = 1) +
+  theme_classic() +
+  labs(y = expression("Area of wrack" ~ (m^2)), x = "") +
+  facet_grid(vars(site), vars()) +  
+  ggtitle("Total area of wrack") +
+  labs(fill = "Species") + 
+  theme(
+    axis.text = element_text(size = 14),   
+    axis.title = element_text(size = 15),    
+    plot.title = element_text(size = 18),     
+    legend.title = element_text(size = 16), 
+    legend.text = element_text(size = 14),  
+    strip.text = element_text(size = 14)) +
+  theme(panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        text = element_text(family = "Times New Roman")) +
+  scale_y_continuous(breaks = seq(0, 400, 100)) 
+
+wrack_piles
+
+
+ggsave("Figure 2.jpg", plot = wrack_piles, width = 8, height = 8, dpi = 600)
 
 
 
@@ -324,6 +353,10 @@ hits_means_se <- hits_means_se %>%
     TRUE ~ as.character(Trip)))
 # keep labels in chronological order
 hits_means_se$trip_label <- factor(hits_means_se$trip_label, levels = c("Mar.", "May", "Sep.", "Dec."))
+#rearrange the order of sites 
+site_order <- c( "Red Eye", "Tender", "Tranquility", "Cissy", "Artist")
+# Convert the site variable to a factor with specified order
+hits_means_se$site <- factor(hits_means_se$site, levels = site_order)
 
 
 seaweed_fragments <-ggplot(hits_means_se, aes(x = trip_label, y = mean_hits, fill = species)) +
@@ -352,6 +385,10 @@ seaweed_fragments
 
 
 #######box plot is more appropriate since we used KW test which compares medians rather than means
+#rearrange the order of sites 
+site_order <- c( "Red Eye", "Tender", "Tranquility", "Cissy", "Artist")
+# Convert the site variable to a factor with specified order
+hits_per_L$site <- factor(hits_per_L$site, levels = site_order)
 
 seaweed_fragments <- ggplot(hits_per_L, aes(x = Trip, y = hits_per_m_beach, fill = species)) +
   geom_boxplot(position = position_dodge(width = 1)) +
@@ -634,6 +671,9 @@ frag_length
 
 
 #######box plot is more appropriate since we used KW test which compares medians rather than means
+site_order <- c( "Red Eye", "Tender", "Tranquility", "Cissy", "Artist")
+# Convert the site variable to a factor with specified order
+length_survey$site <- factor(length_survey$site, levels = site_order)
 
 frag_length <- ggplot(length_survey, aes(x = Trip, fill = species, y = seaweed_m_per_beach_m)) +
   geom_boxplot(position = position_dodge(width = 1)) +
